@@ -1,21 +1,24 @@
 /*
 ---
-description: MooCountdonw
-
-authors:
-  - Raphaël Deschler (http://web-innovation.fr/blog/)
-
-license:
-  - MIT-style license
-
+ 
+script: MooCountdown.js
+ 
+description: MooCountdown extend the class to the use of Timestamp for an employment W days, X hours, Y minutes, Z seconds. It is easy to create a simple and intuitive countdown.
+ 
+license: MIT-style license.
+ 
+authors: Raphaël Deschler
+ 
+docs: http://web-innovation.fr/blog/?p=239
+ 
 requires:
-  - core/1.2.1: '*'
-
-provides:
-  - MooCountdown
-  
-inspiration :
-  - Countdown by David Walsh (http://davidwalsh.name/mootools-countdown-plugin)
+core/1.2.4:
+- Class
+- Element
+ 
+provides: [MooCountdown]
+ 
+...
 */
 
 var MooCountdown = new Class({

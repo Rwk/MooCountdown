@@ -1,6 +1,6 @@
 /*
 ---
-description:     MooCountdonw
+description: MooCountdonw
 
 authors:
   - Raphaël Deschler (http://web-innovation.fr/blog/)
@@ -9,7 +9,7 @@ license:
   - MIT-style license
 
 requires:
-  core/1.2.1:   '*'
+  - core/1.2.1: '*'
 
 provides:
   - MooCountdown

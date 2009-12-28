@@ -1,41 +1,21 @@
 /*
 ---
-Script: MooCountdown.js
-	MooTools Countdown
+description:     MooCountdonw
 
-License:
-	MIT-style license.
+authors:
+  - Raphaël Deschler (http://web-innovation.fr/blog/)
 
-Version:
-	0.1
+license:
+  - MIT-style license
 
-Dependencies:
-	- MooTools Core 1.2.x
-	- MooTools More 1.2.x
-	
 requires:
-  core/1.2.1:'*'
+  core/1.2.1:   '*'
 
-
-Todo:
-	- Add image instead of string countdown
-	- Add news effects
-
-Inspiration:
-	- based on a Script by [David Walsh](http://davidwalsh.name/mootools-countdown-plugin)
-
-Options:
-  - Container (string): ID of the HTML element which contains the countdown. Default : ‘countdown’
-  - futurDate (Timestamp in milliseconds): The countdown’s start in milliseconds. Minimal value = 1. Default : empty.
-  - OnlySeconds (Booleans): If the fixed value is true, there will not be a formatting days/hours/seconds. If you wish to create a countdown for only few seconds, give this value at true. Default : false.
-  - dayText, hourText, minuteText, secondText (string): Text for the administration of internalization. Default, French value for day, hour, minute, second.
-  - onCompleteText (string): Text displayed after the ended of the countdown. Default : null
-  - startFont: starting size of the text for the tween effect. Default : ’32px’
-  - finishFont: arrival size of the text for the tween effect. Default : ’16px’
-  - duration (int): length of the animation and the count of seconds. Default : ‘1000’
-
-Events:
-  - onComplete (function): Personalized function to trigger at the end of the countdown. Default : empty.
+provides:
+  - MooCountdown
+  
+inspiration :
+  - Countdown by David Walsh (http://davidwalsh.name/mootools-countdown-plugin)
 */
 
 var MooCountdown = new Class({

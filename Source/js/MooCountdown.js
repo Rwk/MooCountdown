@@ -14,7 +14,7 @@ Dependencies:
 	- MooTools More 1.2.x
 	
 requires:
-- core: 1.2.4 : '*'
+  core/1.2.1:'*'
 
 
 Todo:

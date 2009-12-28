@@ -12,6 +12,10 @@ Version:
 Dependencies:
 	- MooTools Core 1.2.x
 	- MooTools More 1.2.x
+	
+requires:
+- core: 1.2.4 : '*'
+
 
 Todo:
 	- Add image instead of string countdown

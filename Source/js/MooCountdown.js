@@ -12,9 +12,9 @@ authors: Raphaël Deschler
 docs: http://web-innovation.fr/blog/?p=239
  
 requires:
-core/1.2.4:
-- Class
-- Element
+ core/1.2.4:
+  - Class
+  - Element
  
 provides: [MooCountdown]
  

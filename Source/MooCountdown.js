@@ -1,147 +1,195 @@
 /*
 ---
- 
-script: MooCountdown.js
- 
-description: MooCountdown extend the class to the use of Timestamp for an employment W days, X hours, Y minutes, Z seconds. It is easy to create a simple and intuitive countdown.
- 
-license: MIT-style license.
- 
-authors: Raphaël Deschler
- 
-docs: http://web-innovation.fr/blog/?p=239
- 
-requires:
- core/1.2.4:
-  - Class
-  - Element
- 
-provides: [MooCountdown]
- 
-...
+Script: MooCountdown.js
+	MooTools Countdown
+
+License:
+	MIT-style license.
+
+Version:
+	0.2
+
+Dependencies:
+	- MooTools Core 1.2.x
+	- MooTools More 1.2.x
+
+Todo:
+	- Add image instead of string countdown
+	- Add news effects
+
+Inspiration:
+	- based on a Script by [David Walsh](http://davidwalsh.name/mootools-countdown-plugin)
+	- Thanks to [tlkshadow] http://github.com/tlkshadow] for his correction
+
+Options:
+  - Container (string): ID of the HTML element which contains the countdown. Default : ‘countdown’
+  - futurDate (Timestamp in milliseconds): The countdown’s start in milliseconds. Minimal value = 1. Default : empty.
+  - OnlySeconds (Booleans): If the fixed value is true, there will not be a formatting days/hours/seconds. If you wish to create a countdown for only few seconds, give this value at true. Default : false.
+  - dayText, hourText, minuteText, secondText (string): Text for the administration of internalization. Default, French value for day, hour, minute, second.
+  - onCompleteText (string): Text displayed after the ended of the countdown. Default : null
+  - startFont: starting size of the text for the tween effect. Default : ’32px’
+  - finishFont: arrival size of the text for the tween effect. Default : ’16px’
+  - duration (int): length of the animation and the count of seconds. Default : ‘1000’
+
+Events:
+  - onComplete (function): Personalized function to trigger at the end of the countdown. Default : empty.
 */
 
-var MooCountdown = new Class({
+var MooCountdown;
 
-	Implements: [Events, Options],
-	
+MooCountdown = new Class({
+
+  Implements: [Events, Options],
+  
   options: {
-    //public options
-		container : 'countdown',
-		futureDate : $empty,
-		onlySeconds : false,
-		dayText : 'jour',
-		hourText : 'heure',
-		minuteText : 'minute',
-		secondText : 'seconde',
-    onCompleteText : '',
-		startFont : '32px',
-		finishFont : '16px',
-		duration : 1000,
-		onComplete : $empty,
-		
-    //private options
-		amount : $empty,
-		amountTotal : $empty,
-    days : $empty,
-    hours : $empty,
-    minutes : $empty,
-    seconds : $empty,
-	},
-	
-	initialize : function(options){
-		this.setOptions(options);
-		
-		if(this.options.onlySeconds === true) {
-		  this.options.amountTotal = this.options.futureDate;
-		  this.startOnlySeconds();
-		}
-		else {
-		  this.start();
-		}
-	},
-	
-	start : function(){
-    this.getCount();	
+      startFont : '32',
+      finishFont : '16',
+      duration : 1000,
+      onComplete : $empty
   },
-	
-  getCount : function(){
   
-    //on ré-initialise la variable de sortie et la nouvelle
-    var out = '';
-    this.now = new Date();
-    
-    //Calcul du temps restant en millisecondes
-    this.options.amount = this.options.futureDate - this.now.getTime();
+  initialize : function(element,options){
+      this.setOptions(options);
+  }
 
-    //On récupère le temps en seconde
-    this.options.amount = Math.floor(this.options.amount/1000);
-    this.options.amountTotal = this.options.amount;
+});
+
+MooCountdown.Date = new Class({
+
+  Extends: MooCountdown,
   
-    //calcul des jours
-    this.options.days = Math.floor(this.options.amount/86400);
-    this.options.amount = this.options.amount%86400; 
-    
-    //calcul des heures
-    this.options.hours = Math.floor(this.options.amount/3600);
-    this.options.amount = this.options.amount%3600;
-    
-    //calcul des minutes
-    this.options.minutes = Math.floor(this.options.amount/60);
-    this.options.amount = this.options.amount%60;
-    
-    //calcul des secondes
-    this.options.seconds = this.options.amount;
-    
-    //Texte de sortie
-    if(this.options.days != 0){out += this.options.days +" "+this.options.dayText+((this.options.days !=1)?"s":"")+", ";}
-    if(this.options.days != 0 || this.options.hours != 0){out += this.options.hours +" "+this.options.hourText+((this.options.hours !=1)?"s":"")+", ";}
-    if(this.options.days != 0 || this.options.hours != 0 || this.options.minutes != 0){out += this.options.minutes +" "+this.options.minuteText+((this.options.minutes !=1)?"s":"")+", ";}
-    
-    $(this.options.container).set('text',out);
-    
-    var elSeconds = new Element('span',{
-      id : "seconds",
-      html : this.options.seconds
-    });
-    
-    elSeconds.inject(this.options.container);
-        
-    //l'effet
-    this.options.amountTotal--; 
-    var fx = new Fx.Tween($("seconds"),{
-      duration: this.options.duration,
-      onComplete: function() { 
-        if(this.options.amountTotal >= 0) {         
-          this.getCount();
-        }
-        else {
-           $(this.options.container).set('text',this.options.onCompleteText);
-           this.fireEvent('complete');
-        }
-      }.bind(this)
-    }).start('font-size',[this.options.startFont,this.options.finishFont]); 
-    
+  options: {
+      date : $empty,
+      text: ['year','day','hour','minute','second']
   },
   
-  startOnlySeconds : function(){
-    
-    $(this.options.container).set('text',this.options.amountTotal);
-    
-    this.options.amountTotal--; 
-    var fx = new Fx.Tween(this.options.container,{
-      duration: this.options.duration,
-      onComplete: function() { 
-        if(this.options.amountTotal >= 0) {         
-          this.startOnlySeconds();
-        }
-        else {
-           $(this.options.container).set('text',this.options.onCompleteText);
-           this.fireEvent('complete');
-        }
-      }.bind(this)
-    }).start('font-size',[this.options.startFont,this.options.finishFont]); 
-      
+  initialize : function(element,options){
+      this.Container = document.id(element);
+      this.parent(element, options);
+      this.getDate();
+  },
+  
+  getDate : function(){
+  
+      this.now = new Date();
+  
+      this.amount = Date.parse(this.options.date) - this.now.getTime();
+  
+      this.amount = Math.floor(this.amount/1000);
+      this.amountTotal = this.amount;
+  
+      this.years = Math.floor(this.amount/31536000);
+      this.amount = this.amount%31536000;
+  
+      this.days = Math.floor(this.amount/86400);
+      this.amount = this.amount%86400; 
+  
+      this.hours = Math.floor(this.amount/3600);
+      this.amount = this.amount%3600;
+  
+      this.minutes = Math.floor(this.amount/60);
+      this.amount = this.amount%60;
+  
+      this.seconds = this.amount;
+  
+      this.Container.set('text','').addClass('MooCountdown');
+  
+      if( this.years > 0 ) {
+          var elYears = new Element('span',{
+            'id' : 'years',
+            'class': 'countdown_box'
+          }).inject(this.Container);
+  
+          new Element('span',{'html': this.years,'class':'number'}).inject(elYears);
+          new Element('span',{'html': this.options.text[0],'class':'text'}).inject(elYears);
+      }
+  
+      if( this.days > 0 ) {
+          var elDays = new Element('span',{
+            'id' : 'days',
+            'class': 'countdown_box'
+          }).inject(this.Container);
+  
+          new Element('span',{'html': this.days,'class':'number'}).inject(elDays);
+          new Element('span',{'html': this.options.text[1],'class':'text'}).inject(elDays);
+      }
+  
+      if( this.hours > 0 ) {
+          var elHours = new Element('span',{
+            'id' : 'hours',
+            'class': 'countdown_box'
+          }).inject(this.Container);
+  
+          new Element('span',{'html': this.hours,'class':'number'}).inject(elHours);
+          new Element('span',{'html': this.options.text[2],'class':'text'}).inject(elHours);
+      }
+  
+      if( this.minutes > 0 ) {
+          var elMinutes = new Element('span',{
+            'id' : 'minutes',
+            'html' : "<span class=\"number\">"+this.minutes+"</span><span class=\"text\">"+this.options.text[3]+"</span>",
+            'class': 'countdown_box'
+          }).inject(this.Container);
+          new Element('span',{'html': this.minutes,'class':'number'}).inject(elHours);
+          new Element('span',{'html': this.options.text[3],'class':'text'}).inject(elHours);
+      }
+  
+      var elSeconds = new Element('span',{
+        'id' : 'seconds',
+        'class': 'countdown_box'
+      }).inject(this.Container);
+      new Element('span',{'html': this.seconds,'class':'number'}).inject(elSeconds);
+      new Element('span',{'html': this.options.text[4],'class':'text'}).inject(elSeconds);
+  
+  
+      this.amountTotal--; 
+      var fx = new Fx.Tween($("seconds"),{
+          duration: this.options.duration,
+          onComplete: function() { 
+              if(this.amountTotal >= 0) {         
+                  this.getDate();
+              } else {
+                  this.fireEvent('complete');
+              }
+          }.bind(this)
+      }).start('font-size',[this.options.startFont,this.options.finishFont]); 
+  
+  }
+
+});
+
+MooCountdown.CountDown = new Class({
+
+  Extends: MooCountdown,
+  
+  options: {
+      number : $empty
+  },
+  
+  initialize : function(element,options){
+      this.Container = document.id(element);
+      this.parent(element, options);
+  
+      this.interger = this.options.number;
+      this.getCountDown();
+  },
+  
+  getCountDown : function(){
+  
+      $(this.Container).set('text',this.interger);
+  
+      this.interger--; 
+      var fx = new Fx.Tween(this.Container,{
+          duration: this.options.duration,
+          onComplete: function() { 
+              if(this.interger >= 0) {         
+                  this.getCountDown();
+              } else {
+                  this.fireEvent('complete');
+              }
+          }.bind(this)
+      }).start('font-size',[this.options.startFont,this.options.finishFont]);  
+  
   }
 
 });

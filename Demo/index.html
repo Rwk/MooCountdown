@@ -15,28 +15,28 @@
       window.addEvent('domready', function() {
       
         //demo 1
-        new MooCountdown({futureDate:'1293034266000'});
-        
-        //demo2
-        new MooCountdown({
-          futureDate:'10',
-          onlySeconds:true,
-          container:'countdownSeconds',
-          onComplete: function() { 
-            alert('Countdown !');
-          }
+  
+        new MooCountdown.Date($('countdown'),{
+            date: '06/11/2010 00:00am',
+            text:[' An ',' Jours ',' Heures ',' Minutes ',' Secondes '],
+            startFont : 20,
+            finishFont : 40,
+            onComplete: function () {
+                alert('Terminé');
+            }
         });
-        
-        //demo3
-        new MooCountdown({
-          futureDate:'1293034266000',
-          dayText:'day',
-          hourText:'hour',
-          minuteText:'minute',
-          container:'englishCountdown'
-        }); 
-        
-           
+  
+        //demo 2
+  
+        new MooCountdown.CountDown($('countdown_2'),{
+            number: 10,
+            startFont : 20,
+            finishFont : 40,
+            onComplete: function () {
+                alert('Terminé');
+            }
+        });
+
       });
       
     </script>
@@ -50,11 +50,7 @@
   
   <h1>2.Countdown : secondes</h1>
   
-  <div id="countdownSeconds"></div>
-  
-  <h1>3.Countdown in English</h1>
-  
-  <div id="englishCountdown">
+  <div id="countdown_2"></div>
 
   </body>
 </html>
